@@ -593,14 +593,14 @@ function Index() {
         subtitle="Wybrane montaże w Twojej okolicy."
         glow={{ x: "44%", y: "48%" }}
       >
-        <MobileCarousel dark items={visibleGallery} renderItem={(g) => <GalleryCard g={g} />} />
+        <MobileCarousel dark items={gallery} renderItem={(g) => <GalleryCard g={g} />} />
         <div className="hidden md:grid grid-cols-3 gap-5">
           {visibleGallery.map((g, i) => (
             <GalleryCard key={g.image} g={g} index={i} />
           ))}
         </div>
         {hasMoreGallery && (
-          <Reveal className="mt-6 text-center">
+          <Reveal className="mt-6 hidden text-center md:block">
             <button
               type="button"
               onClick={() => setShowAllGallery((open) => !open)}
