@@ -16,7 +16,7 @@ export function SiteLogo({ className, imageClassName, showName = true }: SiteLog
           src={LOGO_URL}
           alt={SITE_NAME}
           className={cn(
-            "h-11 w-auto max-w-[min(100%,17rem)] object-contain object-left sm:h-12 sm:max-w-[min(100%,19rem)] md:h-14",
+            "h-12 w-auto max-w-[min(100%,20rem)] object-contain object-left sm:h-14 sm:max-w-[min(100%,23rem)] md:h-16 md:max-w-[min(100%,25rem)]",
             imageClassName,
           )}
           width={250}

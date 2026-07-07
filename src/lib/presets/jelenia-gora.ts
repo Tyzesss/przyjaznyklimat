@@ -26,7 +26,7 @@ export const jeleniaGoraPreset: SitePreset = {
     "Montaż i serwis klimatyzacji, wentylacji, rekuperacji oraz pomp ciepła w Jeleniej Górze i okolicach. Bezpłatna wycena — zadzwoń: 782 393 121.",
   siteKeywords:
     "klimatyzacja Jelenia Góra, wentylacja Jelenia Góra, rekuperacja, pompy ciepła, montaż klimatyzacji, serwis klimatyzacji",
-  logoUrl: "/logo.png?v=5",
+  logoUrl: "/logo.png?v=7",
   heroImage: `${UPLOAD}/2023/04/systemy-klimatyzacji-jelenia-gora.jpg`,
   ogImage: `${UPLOAD}/2023/04/systemy-klimatyzacji-jelenia-gora.jpg`,
   googleRating: 5.0,

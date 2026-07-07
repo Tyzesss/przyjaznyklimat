@@ -400,7 +400,7 @@ function SiteHeader() {
         scrolled ? "bg-background/80 shadow-card" : "bg-background/60",
       )}
     >
-      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-3 px-4 sm:h-[4.5rem]">
+      <div className="mx-auto flex h-[4.75rem] max-w-6xl items-center justify-between gap-3 px-4 sm:h-20 md:h-[5.25rem]">
         <a
           href="#top"
           className="flex items-center gap-2"
