@@ -9,19 +9,21 @@ import {
   Wrench,
   Snowflake,
   Wind,
-  ShieldCheck,
+  Fan,
   Zap,
-  Home,
+  Gauge,
+  ShieldCheck,
   CheckCircle2,
   Menu,
   X,
   Star,
+  ChevronDown,
 } from "lucide-react";
-import heroImage from "@/assets/hero.png";
 import { MobileCarousel } from "@/components/MobileCarousel";
 import { StickyCallBar } from "@/components/StickyCallBar";
 import { HowItWorks } from "@/components/HowItWorks";
 import { GoogleReviewsSection } from "@/components/GoogleReviewsSection";
+import { SiteLogo } from "@/components/SiteLogo";
 import { Reveal } from "@/components/Reveal";
 import {
   Accordion,
@@ -57,6 +59,7 @@ import {
   NIP,
   GALLERY,
   GOOGLE_REVIEWS_URL,
+  HERO_IMAGE,
 } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
@@ -86,13 +89,15 @@ const NAV_LINKS = [
 ] as const;
 
 const services = [
-  { icon: Snowflake, title: "Montaż klimatyzacji", desc: "Profesjonalny montaż split i multi-split w domach i mieszkaniach." },
-  { icon: Wrench, title: "Serwis i przeglądy", desc: "Coroczne przeglądy, czyszczenie i ozonowanie urządzeń." },
-  { icon: Wind, title: "Rekuperacja", desc: "Dobór i montaż systemów wentylacji mechanicznej z odzyskiem ciepła." },
-  { icon: Zap, title: "Pompy ciepła", desc: "Dobór i instalacja pomp powietrze-woda dla domów jednorodzinnych." },
-  { icon: Home, title: "Klima do biura", desc: "Systemy klimatyzacji dla lokali usługowych i biur." },
-  { icon: ShieldCheck, title: "Naprawa awaryjna", desc: "Szybka reakcja w przypadku awarii – dojazd nawet tego samego dnia." },
+  { icon: Snowflake, title: "Klimatyzacja split i VRF", desc: "Montaż systemów split, multi-split i VRF w domach, biurach i obiektach usługowych." },
+  { icon: Wind, title: "Wentylacja i rekuperacja", desc: "Projekt i montaż wentylacji mechanicznej z odzyskiem ciepła dla domów i firm." },
+  { icon: Zap, title: "Pompy ciepła", desc: "Dobór i instalacja pomp split oraz monoblok dla budynków jedno- i wielorodzinnych." },
+  { icon: Fan, title: "Wentylacja komercyjna", desc: "Instalacje dla hoteli, restauracji, hal produkcyjnych i obiektów przemysłowych." },
+  { icon: Wrench, title: "Serwis i przeglądy", desc: "Niezależna ekipa serwisowa — przeglądy, naprawy i konserwacja urządzeń HVAC." },
+  { icon: Gauge, title: "Pomiary wentylacji", desc: "Pomiary skuteczności instalacji wentylacyjnych z protokołem dla inwestora." },
 ];
+
+const GALLERY_INITIAL_COUNT = 6;
 
 const SERVICE_OPTION_GROUPS = [
   {
@@ -100,13 +105,13 @@ const SERVICE_OPTION_GROUPS = [
     options: [
       "Klimatyzacja — dom lub mieszkanie",
       "Klimatyzacja — biuro lub lokal",
-      "Rekuperacja",
+      "Wentylacja i rekuperacja",
       "Pompa ciepła",
     ],
   },
   {
     label: "Serwis i naprawa",
-    options: ["Przegląd i konserwacja", "Naprawa awaryjna"],
+    options: ["Przegląd i konserwacja", "Naprawa awaryjna", "Pomiar skuteczności wentylacji"],
   },
   {
     label: "Inne",
@@ -395,16 +400,13 @@ function SiteHeader() {
         scrolled ? "bg-background/80 shadow-card" : "bg-background/60",
       )}
     >
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4">
+      <div className="mx-auto flex h-[4.25rem] max-w-6xl items-center justify-between gap-3 px-4 sm:h-[4.5rem]">
         <a
           href="#top"
           className="flex items-center gap-2"
           onClick={() => setMenuOpen(false)}
         >
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-gradient-accent text-white shadow-glow">
-            <Snowflake className="h-5 w-5" />
-          </div>
-          <span className="font-bold tracking-tight text-foreground">{SITE_NAME}</span>
+          <SiteLogo />
         </a>
 
         <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
@@ -460,6 +462,9 @@ function SiteHeader() {
 
 function Index() {
   const { googleReviews } = Route.useLoaderData();
+  const [showAllGallery, setShowAllGallery] = useState(false);
+  const visibleGallery = showAllGallery ? gallery : gallery.slice(0, GALLERY_INITIAL_COUNT);
+  const hasMoreGallery = gallery.length > GALLERY_INITIAL_COUNT;
 
   return (
     <div className="page-shell">
@@ -471,7 +476,7 @@ function Index() {
         <div className="hero-services-bg" aria-hidden>
           <div
             className="hero-photo"
-            style={{ backgroundImage: `url(${heroImage})` }}
+            style={{ backgroundImage: `url(${HERO_IMAGE ?? ""})` }}
           />
           <div className="hero-photo-scrim" />
         </div>
@@ -554,7 +559,7 @@ function Index() {
           id="uslugi"
           eyebrow="Usługi"
           title="Nasze usługi"
-          subtitle="Montaż split i multi-split w domach, mieszkaniach i biurach."
+          subtitle="Klimatyzacja, wentylacja, rekuperacja i pompy ciepła dla domów oraz firm."
           glow={{ x: "22%", y: "58%", strength: 0.035 }}
         >
           <MobileCarousel dark items={services} renderItem={(s) => <ServiceCard s={s} index={services.indexOf(s)} />} />
@@ -588,12 +593,24 @@ function Index() {
         subtitle="Wybrane montaże w Twojej okolicy."
         glow={{ x: "44%", y: "48%" }}
       >
-        <MobileCarousel dark items={gallery} renderItem={(g) => <GalleryCard g={g} />} />
+        <MobileCarousel dark items={visibleGallery} renderItem={(g) => <GalleryCard g={g} />} />
         <div className="hidden md:grid grid-cols-3 gap-5">
-          {gallery.map((g, i) => (
+          {visibleGallery.map((g, i) => (
             <GalleryCard key={g.image} g={g} index={i} />
           ))}
         </div>
+        {hasMoreGallery && (
+          <Reveal className="mt-6 text-center">
+            <button
+              type="button"
+              onClick={() => setShowAllGallery((open) => !open)}
+              className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/6 px-5 py-2.5 text-sm font-medium text-white/90 transition-smooth hover:border-brand-cyan/30 hover:bg-white/10"
+            >
+              {showAllGallery ? "Pokaż mniej realizacji" : `Pokaż wszystkie realizacje (${gallery.length})`}
+              <ChevronDown className={cn("h-4 w-4 transition-transform", showAllGallery && "rotate-180")} />
+            </button>
+          </Reveal>
+        )}
       </Section>
 
       {/* FAQ */}
@@ -636,7 +653,7 @@ function Index() {
                 <p className="section-eyebrow">Kontakt</p>
                 <h2 className="mt-1.5 text-2xl font-bold tracking-tight text-white">Skontaktuj się z nami</h2>
                 <p className="mt-1.5 text-sm leading-relaxed text-white/75">
-                  Zadzwoń, napisz na e-mail lub odwiedź nas — jesteśmy czynni Pn–Sob 8:00–18:00.
+                  Zadzwoń, napisz na e-mail lub odwiedź nas — jesteśmy czynni {HOURS}.
                 </p>
               </Reveal>
 
@@ -662,7 +679,7 @@ function Index() {
                 <p className="section-eyebrow">Kontakt</p>
                 <h2 className="mt-1.5 text-4xl font-bold tracking-tight text-white">Skontaktuj się z nami</h2>
                 <p className="mt-1.5 text-base leading-relaxed text-white/75">
-                  Zadzwoń, napisz na e-mail lub odwiedź nas — jesteśmy czynni Pn–Sob 8:00–18:00.
+                  Zadzwoń, napisz na e-mail lub odwiedź nas — jesteśmy czynni {HOURS}.
                 </p>
               </Reveal>
 
@@ -689,7 +706,7 @@ function Index() {
       {/* FOOTER */}
       <footer className="relative px-4 pt-10 pb-24 text-foreground md:pb-8">
         <div className="mx-auto max-w-6xl text-center text-sm text-muted-foreground">
-          <p className="font-bold text-foreground">{SITE_NAME} — Klimatyzacja i Serwis</p>
+          <p className="font-bold text-foreground">{SITE_NAME} — Klimatyzacja, wentylacja i rekuperacja</p>
           <p className="mt-3 flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
             <a href={PHONE_HREF} className="inline-flex items-center gap-1.5 transition-smooth hover:text-foreground">
               <Phone className="h-3.5 w-3.5" /> {PHONE_DISPLAY}

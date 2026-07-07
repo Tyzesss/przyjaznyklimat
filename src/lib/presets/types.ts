@@ -30,11 +30,17 @@ export type SitePreset = {
   addressCity: string;
   addressPostal: string;
   mapsQuery: string;
+  hours?: string;
   nip: string;
   regon: string;
   siteTitle: string;
+  siteDescription?: string;
   siteKeywords: string;
+  logoUrl?: string;
+  heroImage?: string;
   ogImage: string;
+  googleRating?: number;
+  googleReviewCount?: number;
   googlePlaceId?: string;
   googleReviewsUrl?: string;
   googleWriteReviewUrl?: string;
